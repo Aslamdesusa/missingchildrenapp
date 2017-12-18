@@ -9,17 +9,18 @@ const routes =[
 
 	{
     	method: 'GET',
-    	path: '/getdetals/{id}',
+    	path: '/Get/missingchildren/detals/by/{id}',
+    	config:{
+    		tags:['api'],
+            description:"Getting Details Of a Particular Missing Children",
+            notes:"We can get details of a particular missngchildrenid with his precious id",
+    		validate:{
+				params:{
+					id:Joi.string().required()
+				}
+			}
+		},
     	handler: function(request, reply){
-    		// console.log('sdfkjsjkf');
-    		
-    		config:{
-    			validate:{
-    				params:{
-    					id:Joi.string().required()
-    				}
-    			}
-    		}
     		Model.find({"_id":request.params.id}, function(err, data){
     			// console.log('dslfkjlkds');
     			if (err) {
@@ -41,7 +42,12 @@ const routes =[
     },
 	{
 		method:'POST',
-		path:'/user/create/missingChildren/details',
+		path:'/Create/missingChildren/details',
+		config:{
+			tags:['api'],
+            description:"User Create For Missing Children Details",
+            notes:"we can put some Details here For missing Children",
+		},
 		handler: (request, reply) => {
 			// console.log(request.payload);
 			var newModel = new Model({
@@ -65,9 +71,14 @@ const routes =[
 	},
 	{
 	    method: 'GET',
-	    path: '/user/getallmodel',
+	    path: '/Get/all/data',
+	    config:{
+	    	tags:['api'],
+            description:"getting all data from here",
+            notes:"we can get all data from here and you will see all missingChildren details here",
+	    },
 	    handler: ( request, reply ) => {
-	    	console.log('slkdfjslkjfljs');
+	    	// console.log('slkdfjslkjfljs');
 	    	Model.find(function(error, data){
 	    		if(error){
 	    			console.log(error);
@@ -82,8 +93,11 @@ const routes =[
 	},
 	{
 		method: 'PUT',
-		path: '/update/onmissingchildren/{id}',
+		path: '/Update/missingchildren/details/{id}',
 			config:{
+				tags:['api'],
+	            description:"Edit Missing Children Details",
+	            notes:"we can Edit all details of missingchildren from his id",
 				validate:{
 					params:{
 						id:Joi.string().required()
@@ -114,8 +128,11 @@ const routes =[
 	},
 	{
 		method: 'DELETE',
-		path: '/missingChildren/deletedata/{id}',
+		path: '/Delete/missingchildren/data/{id}',
 		config:{
+			tags:['api'],
+            description:"Delete Missing Children Data",
+            notes:"We Can Delete Missing Children Data From Missing Children ID",
 			validate:{
 				params:{
 					id:Joi.string().required()
@@ -142,17 +159,18 @@ const routes =[
 	},
 	{
     	method: 'GET',
-    	path: '/getdetals/missingChildren/{Name}',
-    	handler: function(request, reply){
-    		// console.log('sdfkjsjkf');
-    		
-    		config:{
-    			validate:{
-    				params:{
-    					Name:Joi.string().required()
-    				}
-    			}
-    		}
+    	path: '/Get/detals/missingChildren/{Name}',
+    	config:{
+    		tags:['api'],
+            description:"Get Details Of Missing Children By His/Her Name",
+            notes:"We Can Get Details Of Missing Children From His/Her Name",
+			validate:{
+				params:{
+					Name:Joi.string().required()
+				}
+			}
+		},
+    	handler: function(request, reply){   		
     		Model.find({'Name':request.params.Name}, function(err, data){
     			console.log(data);
     			if (err) {
@@ -180,8 +198,11 @@ const routes =[
     },
     {
 		method:'POST',
-		path:'/user/create/missingChildren/comment/{id}',
+		path:'/Create/comment/on/missingChildren/{id}',
 		config:{
+			tags:['api'],
+            description:"Create Comment on particular missing children Details From Missing Children ID",
+            notes:"We Can Create comment On Missing Children Details From missing Children ID",
 			validate:{
 				params:{
 					id:Joi.string().required()
@@ -200,7 +221,7 @@ const routes =[
 				// return reply.continue();
 			});
 			// console.log(request.payload);
-			var newComment = new Comment({
+			var newComment = new comment({
 				"missngchildrenid": request.params.id,
 				"comment": request.payload.comment,
 			});
@@ -217,6 +238,104 @@ const routes =[
 				}
 			});
 		}
-	}
+	},
+	{
+		method: 'GET',
+		path: '/Get/comment/by/{id}',
+		config: {
+			tags:['api'],
+            description:"Get Comment By ID",
+            notes:"We Can Get Comment By Comment ID",
+			validate:{
+				params:{
+					id:Joi.string().required()
+				}
+			}
+		},
+		handler: function(request, reply){
+			Comment.find({_id: request.params.id}, function(err, data){
+				if (err) {
+					reply({
+						statusCode: 503,
+						message: 'this id dose not exist',
+						data: err
+					});
+				}else{
+					reply({
+						statusCode: 200,
+						message: 'data has found successfully',
+						data: data
+					});
+				}
+			});
+		}
+	},
+	{
+		method: 'PUT',
+		path: '/Update/comment/{id}',
+		config:{
+			tags:['api'],
+            description:"Edit Comment By Comment ID",
+            notes:"We Can Edit Comment By Comment ID",
+			validate:{
+				params:{
+					id:Joi.string().required()
+				},
+				payload: {
+					comment:Joi.string().required(),
+				}
+			}
+		},
+		handler: function(request, reply){
+			Comment.findOneAndUpdate({_id:request.params.id}, request.payload, function(err, data){
+				if (err) {
+					reply({
+						statusCode: 503,
+						message: 'this id data dose not exist',
+						data: err
+					});
+				}else{
+					reply({
+						statusCode: 200,
+						message: 'comment update successfully',
+						data: data
+					});
+				}
+			});
+		}
+	},
+	{
+		method: 'DELETE',
+		path: '/Delete/comment/{id}',
+		config:{
+			tags:['api'],
+            description:"Delete Comment By ID",
+            notes:"We Can Delete Comment By CommentID",
+			validate:{
+				params:{
+					id:Joi.string().required()
+				}
+			}
+		},
+		handler: function(request, reply){
+			Comment.findOneAndRemove({'_id':request.params.id}, function(err, data){
+				if (err) {
+					reply({
+						statusCode: 503,
+						message: 'This id comment dose not exist',
+						data: err
+					});
+				}else{
+					reply({
+						statusCode: 200,
+						message: 'Comment Deleted Successfully',
+						data: data
+					});
+				}
+			});
+		}
+	},
+	
+
 ]
 export default routes;
