@@ -4,6 +4,9 @@ const Comment = require('../models/comment')
 const Joi = require('joi');
 const path = require('path');
 const fs = require('fs');
+var express = require('express');
+// var Schema = mongoose.Schema;
+var multer = require('multer');
 
 const routes =[
 
@@ -335,7 +338,42 @@ const routes =[
 			});
 		}
 	},
-	
+	{
+        method: 'POST',
+        path: '/submit',
+        config:{
+        	tags:['api'],
+            description:"Post MissingChildren Image",
+            notes:"We Can Add a Picture of MissingChildren",
+            payload:{
+            	output: 'stream',
+	            parse: true,
+	            allow: 'multipart/form-data',
+            }
+        },
+        handler: function(request, reply){
+        	var data = request.payload;
+        	if (data.file) {
+        		var name = data.file.hapi.filename;
+                const __dirname = '/home/navgurukul/Desktop/project/Nodejs/missingc/uploadimage/'
+        		var path = __dirname + "/uploadimage/" + name;
+        		var file = fs.createWriteStream(path);
+
+        		file.on('error', function (err){
+        			console.error(err)
+        		});
+        		data.file.pip(file);
+
+        		data.file.on('end', function (err){
+        			var ret = {
+        				filename: data.file.hapi.filename,
+                        headers: data.file.hapi.headers
+        			}
+        		});
+        	}
+        }
+    }
+       
 
 ]
 export default routes;
