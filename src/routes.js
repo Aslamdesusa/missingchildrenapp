@@ -355,20 +355,20 @@ const routes =[
         	var data = request.payload;
         	if (data.file) {
         		var name = data.file.hapi.filename;
-                const __dirname = '/home/navgurukul/Desktop/project/Nodejs/missingc/uploadimage/'
         		var path = __dirname + "/uploadimage/" + name;
         		var file = fs.createWriteStream(path);
 
         		file.on('error', function (err){
         			console.error(err)
         		});
-        		data.file.pip(file);
+        		data.file.pipe(file);
 
         		data.file.on('end', function (err){
         			var ret = {
         				filename: data.file.hapi.filename,
                         headers: data.file.hapi.headers
         			}
+        			reply(ret)
         		});
         	}
         }
