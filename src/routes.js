@@ -12,7 +12,18 @@ const async = require('async')
 
 
 const routes =[
-
+	{
+		method: 'GET',
+		path; '/',
+		config:{
+			tags:['api'],
+			description:"node is working",
+			notes:"node is working",
+		},
+		handler: function(request, reply){
+			return reply('node is working')
+		}
+	},
 	{
     	method: 'GET',
     	path: '/Get/missingchildren/detals/by/{id}',
