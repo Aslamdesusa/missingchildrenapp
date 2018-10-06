@@ -392,8 +392,8 @@ const routes =[
     	path: '/signup',
     	config:{
         	tags:['api'],
-            description:"Post MissingChildren Image",
-            notes:"We Can Add a Picture of MissingChildren",
+            description:"user can signup with some details",
+            notes:"user can signup with some details",
         },
         handler: function(request, reply){
         	async function LoginUser() {
