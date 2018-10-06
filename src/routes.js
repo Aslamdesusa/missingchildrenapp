@@ -1,12 +1,15 @@
 const db = require('../database').db;
 const Model = require('../models/models') 
 const Comment = require('../models/comment')
+const loginModal = require('../models/login')
 const Joi = require('joi');
 const path = require('path');
 const fs = require('fs');
 var express = require('express');
 // var Schema = mongoose.Schema;
 var multer = require('multer');
+const async = require('async')
+
 
 const routes =[
 
@@ -372,6 +375,29 @@ const routes =[
         		});
         	}
         }
+    },
+    {
+    	method: 'POST',
+    	path: '/signup',
+    	config:{
+        	tags:['api'],
+            description:"Post MissingChildren Image",
+            notes:"We Can Add a Picture of MissingChildren",
+        },
+        handler: function(request, reply){
+        	async function LoginUser() {
+				await new Promise((resolve, reject) => setTimeout(() => resolve(), 1000));
+				var newUser = new loginModal(request.payload);
+				newUser.save()
+				.then(function(result){
+					return reply({
+						message: 'User successfully Registerd',
+						result: result
+					});
+				});
+			}
+			LoginUser()
+        }	
     }
        
 

@@ -1,15 +1,24 @@
-// Include Mongoose ORM to connect with database
-var Mongoose = require('mongoose');
+// Including the Mongoose ORM to connect with Mongo DB
+const Mongoose = require('mongoose');
 
-//load database
-Mongoose.connect('mongodb://localhost/missingchildren')
+
+// const databaseURI = 'mongodb://kumar:mera55555#@ds141641.mlab.com:41641/merakaamkaaj';
+const mongoDbUri = 'mongodb://missing:missing123@ds119503.mlab.com:19503/missing_child';
+
+//mongodb://<dbuser>:<dbpassword>@ds141641.mlab.com:41641/merakaamkaaj
+// Making connection with 'MongoDB'
+Mongoose.connect(mongoDbUri, { useMongoClient:true })
+
+//Variable to store the database connection
 var db = Mongoose.connection;
 
-//this is will happen when we got an errror while connecting with database
+//Handling errors!
 db.on('error', console.error.bind(console, 'connection error'));
 
+
 db.once('open', function callback(){
-    console.log('Connection with database succeeded.')
+    console.log('Connection with database succeeded ' + mongoDbUri);
 });
 
-exports.db =db;
+exports.db=db;
+
