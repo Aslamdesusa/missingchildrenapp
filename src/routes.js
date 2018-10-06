@@ -14,7 +14,7 @@ const async = require('async')
 const routes =[
 	{
 		method: 'GET',
-		path; '/',
+		path: '/',
 		config:{
 			tags:['api'],
 			description:"node is working",
