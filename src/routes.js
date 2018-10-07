@@ -401,10 +401,14 @@ const routes =[
 				var newUser = new loginModal(request.payload);
 				newUser.save()
 				.then(function(result){
-					return reply({
-						message: 'User successfully Registerd',
-						result: result
-					});
+					if (!result) {
+						return reply('user already exist Please try with another email or mobile')
+					}else{
+						return reply({
+							message: 'User successfully Registerd',
+							result: result
+						});
+					}
 				});
 			}
 			LoginUser()

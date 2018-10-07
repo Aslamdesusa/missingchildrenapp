@@ -29,9 +29,14 @@ const port = process.env.PORT || 8000;
 
 server.connection( {
     port: port,
-    routes: { cors: true }
+    routes: {
+        cors: {
+            origin: ["*"],
+            headers: ["Accept", "Content-Type"],
+            additionalHeaders: ["X-Requested-With"],
+        }
+    }
 });
-
 
 server.register([
     Inert,
