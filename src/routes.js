@@ -392,8 +392,22 @@ const routes =[
     	path: '/signup',
     	config:{
         	tags:['api'],
-            description:"user can signup with some details",
-            notes:"user can signup with some details",
+            description:"user can signup with some details.",
+            notes:"When you are posting user data then you have to keep in your mind that object data's key is as same as the example value's key if you wanna check this how it's work you have to click on modal of example value when data will come to the body then press the try it button.",
+            validate:{
+            	payload:{
+            		"firstname": Joi.string(),
+				    "lastname": Joi.string(),
+				    "mobile": Joi.number().required(),
+				    "emailid": Joi.string().required(),
+				    "password": Joi.string(),
+				    "address": Joi.string(),
+				    "state": Joi.string(),
+				    "city": Joi.string(),
+				    "pincode": Joi.number(),
+				    "gender": Joi.string(),
+            	}
+            }
         },
         handler: function(request, reply){
         	console.log(request.payload)
