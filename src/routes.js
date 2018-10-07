@@ -396,23 +396,19 @@ const routes =[
             notes:"user can signup with some details",
         },
         handler: function(request, reply){
-        	async function LoginUser() {
-				await new Promise((resolve, reject) => setTimeout(() => resolve(), 1000));
-				var newUser = new loginModal(request.payload);
-				newUser.save()
-				.then(function(result){
-					if (!result) {
-						return reply('user already exist Please try with another email or mobile')
-					}else{
-						return reply({
-							message: 'User successfully Registerd',
-							result: result
-						});
-					}
-				});
-			}
-			LoginUser()
-        }	
+        	console.log(request.payload)
+			var newUser = new loginModal(request.payload);
+			newUser.save({}, function(err, data){
+				if (err) {
+					reply('user already exist please try with another mobile and email')
+				}else{
+					return reply({
+						message: 'user successfully registered',
+						data: data
+					});
+				}
+			});
+        }
     }
        
 
