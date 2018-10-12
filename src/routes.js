@@ -428,6 +428,9 @@ const routes =[
 	    method:'POST',
 	    path:'/user/login',
 	    config:{
+	    	tags:['api'],
+            description:"User Login",
+            notes:"You can use this api with payload emailid and password keep in your mind emailid and password must be as same in database.",
 	    	validate: {
 	         	payload:{
 	         		emailid:Joi.string().required(),
