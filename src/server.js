@@ -67,7 +67,7 @@ server.register(require('hapi-auth-cookie'), (err)=>{
   server.auth.strategy('restricted', 'cookie',{
     ttl: 24 * 60 * 60 * 1000, 
     password: 'vZiYpmTzqXMp8PpYXKwqc9ShQ1UhyAfy',
-    cookie: 'checkin_cookie',
+    cookie: 'missing_child_cookie',
     isSecure: false, 
     redirectTo: '/login'
   });

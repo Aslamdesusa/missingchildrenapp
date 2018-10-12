@@ -423,7 +423,31 @@ const routes =[
 				}
 			});
         }
-    }
+    },
+    {
+	    method:'POST',
+	    path:'/user/login',
+	    config:{
+	    	validate: {
+	         	payload:{
+	         		emailid:Joi.string().required(),
+	         		password:Joi.string().required(),
+	         	}
+			},
+	    },
+	    handler: function(request, reply){
+	    	loginModal.find({'emailid': request.payload.emailid, 'password': request.payload.password, }, function(err, data){
+	    		if (err){
+	    			throw err
+	    		}else if (data.length == 0){
+	    			reply('User Dose Not Exist Please try with your correct Email and Password')
+	    		}else{
+	    			request.cookieAuth.set(data[0]);
+	    			reply(data)
+	        	}
+	        })
+	    }
+	},
        
 
 ]
