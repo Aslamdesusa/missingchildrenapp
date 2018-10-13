@@ -1,5 +1,5 @@
 const db = require('../database').db;
-const Model = require('../models/models') 
+const missingChildModal = require('../models/models') 
 const Comment = require('../models/comment')
 const loginModal = require('../models/login')
 const Joi = require('joi');
@@ -9,7 +9,7 @@ var express = require('express');
 // var Schema = mongoose.Schema;
 var multer = require('multer');
 const async = require('async')
-
+const Readable = require('stream').Readable
 
 const routes =[
 	// {
@@ -59,11 +59,11 @@ const routes =[
  //    },
 	// {
 	// 	method:'POST',
-	// 	path:'/Create/missingChildren/details',
+	// 	path:'/create/missingChildren/details',
 	// 	config:{
-	// 		tags:['api'],
- //            description:"User Create For Missing Children Details",
- //            notes:"we can put some Details here For missing Children",
+			// tags:['api'],
+   //          description:"User Can Create Missing Child Details",
+   //          notes:"You have to create missing children Details",
 	// 	},
 	// 	handler: (request, reply) => {
 	// 		// console.log(request.payload);
@@ -86,6 +86,74 @@ const routes =[
 	// 		});
 	// 	}
 	// },
+	{
+    method: 'POST',
+    path: '/create/missingChildren/details',
+    config: {
+    	// handler: handlers.storeAddFile,
+    	plugins: {
+            'hapi-swagger': {
+                payloadType: 'form'
+            },
+        },
+    	tags:['api'],
+        description:"User Can Create Missing Child Details",
+        notes:"You have to post missing children Details and keep in your mind that both fields are required",
+        // path : "/uploads/file",
+    	payload: {
+    		output: 'file',
+            parse: true,
+            allow: 'multipart/form-data',
+            maxBytes: 2 * 1000 * 1000,
+        },
+        validate:{
+        	payload:{
+        		file: Joi.any()
+                    .meta({ swaggerType: 'file' })
+                    .description('json file'),
+        		"missingChildName": Joi.string(),
+        		"Description": Joi.string()
+        	}
+        },
+    },
+    handler: function (request, reply) {
+    	var uuid = {};
+    	var newModel = new missingChildModal(request.payload);
+    	newModel.save(function (err, data){
+    		if (err) {
+    			reply('error saving data')
+			}else{
+				reply({
+					statusCode: 200,
+                    message: 'Missing Children Details Created Successfully',
+                    data: data
+				})
+				uuid=data;
+				var dataa = request.payload;
+	            if (dataa.image) {
+	                var name = uuid._id + ".jpg";
+	                const __dirname = '../missingchildrenapp/src'
+	                var path = __dirname + "/uploadimage/" + name;
+	                var file = fs.createWriteStream(path);
+
+	                file.on('error', function (err) { 
+	                    console.error('error in saving image') 
+	                });
+	                dataa.image.pipe(file);
+	                dataa.image.on('end', function (err) {
+	                    var ret = {
+	                        filename: uuid._id + ".jpg",
+	                        headers: dataa.image.hapi.headers
+
+	                    }
+	                });
+		        }
+			}
+
+		});
+
+    }
+},
 	// {
 	//     method: 'GET',
 	//     path: '/Get/all/data',

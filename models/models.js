@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var modelSchema = new Schema({
-	Name:String,
-	Description:String
+	missingChildName:{type: String, required:true},
+	Description:{type: String, required:true}
 });
 
 const misschildren = mongoose.model('misschildren', modelSchema);
